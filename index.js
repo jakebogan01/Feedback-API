@@ -1,8 +1,10 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/productModel");
+const Suggestion = require("./models/suggestionModel");
 const User = require("./models/userModel");
 const app = express();
+dotenv.config();
 
 // types of middleware
 // json
@@ -78,67 +80,67 @@ app.delete("/users/:id", async (req, res) => {
      }
 });
 
-// fetch all products
-app.get("/products", async (req, res) => {
+// create a suggestion
+app.post("/suggestions", async (req, res) => {
      try {
-          const products = await Product.find({});
-          res.status(200).json(products);
+          const suggestion = await Suggestion.create(req.body);
+          res.status(200).json(suggestion);
      } catch (error) {
           console.log(error.message);
           res.status(500).json({ message: error.message });
      }
 });
 
-// fetch a product
-app.get("/products/:id", async (req, res) => {
+// fetch all suggestion
+app.get("/suggestions", async (req, res) => {
+     try {
+          const suggestion = await Suggestion.find({});
+          res.status(200).json(suggestion);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
+
+// fetch a suggestion
+app.get("/suggestions/:id", async (req, res) => {
      try {
           const { id } = req.params;
-          const product = await Product.findById(id);
-          res.status(200).json(product);
+          const suggestion = await Suggestion.findById(id);
+          res.status(200).json(suggestion);
      } catch (error) {
           console.log(error.message);
           res.status(500).json({ message: error.message });
      }
 });
 
-// create a product
-app.post("/products", async (req, res) => {
-     try {
-          const product = await Product.create(req.body);
-          res.status(200).json(product);
-     } catch (error) {
-          console.log(error.message);
-          res.status(500).json({ message: error.message });
-     }
-});
-
-// update a product
-app.put("/products/:id", async (req, res) => {
+// update a suggestion
+app.put("/suggestions/:id", async (req, res) => {
      try {
           const { id } = req.params;
-          const product = await Product.findByIdAndUpdate(id, req.body);
-          // we cannot find the matching product in database
-          if (!product) {
-               return res.status(404).json({ message: `cannot find any product with ID ${id}` });
+          const suggestion = await Suggestion.findByIdAndUpdate(id, req.body);
+          // we cannot find the matching suggestion in database
+          if (!suggestion) {
+               return res.status(404).json({ message: `cannot find any suggestion with ID of ${id}` });
           }
-          const updatedProduct = await Product.findById(id);
-          res.status(200).json(updatedProduct);
+          const updatedSuggestion = await Suggestion.findById(id);
+          res.status(200).json(updatedSuggestion);
      } catch (error) {
           console.log(error.message);
           res.status(500).json({ message: error.message });
      }
 });
 
-// delete a product
-app.delete("/products/:id", async (req, res) => {
+// delete a suggestion
+app.delete("/suggestions/:id", async (req, res) => {
      try {
           const { id } = req.params;
-          const product = await Product.findByIdAndDelete(id);
-          // we cannot find the matching product in database
-          if (!product) {
-               return res.status(404).json({ message: `cannot find any product with ID ${id}` });
+          const suggestion = await Suggestion.findByIdAndDelete(id);
+          // we cannot find the matching suggestion in database
+          if (!suggestion) {
+               return res.status(404).json({ message: `cannot find any suggestion with ID of ${id}` });
           }
-          res.status(200).json(product);
+          res.status(200).json(suggestion);
      } catch (error) {
           console.log(error.message);
           res.status(500).json({ message: error.message });
@@ -150,7 +152,7 @@ mongoose.set("strictQuery", false);
 
 // connect to mongodb database
 mongoose
-     .connect("mongodb+srv://admin:Lordtbr1!@tomapi.eup9dn8.mongodb.net/Node-API?retryWrites=true&w=majority")
+     .connect(`mongodb+srv://admin:${process.env.API_PASSWORD}@tomapi.eup9dn8.mongodb.net/Node-API?retryWrites=true&w=majority`)
      .then(() => {
           console.log("connected to MongoDB");
           app.listen(3000, () => {
