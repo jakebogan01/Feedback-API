@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Product = require("./models/productModel");
-// const User = require("./models/userModel");
+const User = require("./models/userModel");
 const app = express();
 
 // types of middleware
@@ -12,26 +12,26 @@ app.use(express.urlencoded({ extended: false }));
 
 //routes
 // create a user
-// app.post("/users", async (req, res) => {
-//      try {
-//           const user = await User.create(req.body);
-//           res.status(200).json(user);
-//      } catch (error) {
-//           console.log(error.message);
-//           res.status(500).json({ message: error.message });
-//      }
-// });
+app.post("/users", async (req, res) => {
+     try {
+          const user = await User.create(req.body);
+          res.status(200).json(user);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
 
 // fetch all users
-// app.get("/users", async (req, res) => {
-//      try {
-//           const user = await User.find({});
-//           res.status(200).json(user);
-//      } catch (error) {
-//           console.log(error.message);
-//           res.status(500).json({ message: error.message });
-//      }
-// });
+app.get("/users", async (req, res) => {
+     try {
+          const user = await User.find({});
+          res.status(200).json(user);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
 
 // fetch all products
 app.get("/products", async (req, res) => {
