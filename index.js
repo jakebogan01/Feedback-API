@@ -33,6 +33,51 @@ app.get("/users", async (req, res) => {
      }
 });
 
+// fetch a user
+app.get("/users/:id", async (req, res) => {
+     try {
+          const { id } = req.params;
+          const user = await User.findById(id);
+          res.status(200).json(user);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
+
+// update a user
+app.put("/users/:id", async (req, res) => {
+     try {
+          const { id } = req.params;
+          const user = await User.findByIdAndUpdate(id, req.body);
+          // we cannot find the matching user in database
+          if (!user) {
+               return res.status(404).json({ message: `cannot find any user with ID of ${id}` });
+          }
+          const updatedUser = await User.findById(id);
+          res.status(200).json(updatedUser);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
+
+// delete a user
+app.delete("/users/:id", async (req, res) => {
+     try {
+          const { id } = req.params;
+          const user = await User.findByIdAndDelete(id);
+          // we cannot find the matching user in database
+          if (!user) {
+               return res.status(404).json({ message: `cannot find any user with ID of ${id}` });
+          }
+          res.status(200).json(user);
+     } catch (error) {
+          console.log(error.message);
+          res.status(500).json({ message: error.message });
+     }
+});
+
 // fetch all products
 app.get("/products", async (req, res) => {
      try {
