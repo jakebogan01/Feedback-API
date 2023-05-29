@@ -6,6 +6,13 @@ const User = require("./models/userModel");
 const app = express();
 dotenv.config();
 
+const cors = require("cors");
+app.use(
+     cors({
+          origin: "http://localhost:5173",
+     })
+);
+
 //
 // types of middleware
 // json
