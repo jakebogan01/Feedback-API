@@ -6,6 +6,7 @@ const User = require("./models/userModel");
 const app = express();
 dotenv.config();
 
+//
 // types of middleware
 // json
 app.use(express.json());
