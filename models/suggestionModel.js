@@ -15,13 +15,21 @@ const suggestionSchema = mongoose.Schema(
                required: false,
                default: 0,
           },
-          price: {
+          tag: {
+               type: String,
+               required: [true, "Please enter a category"],
+          },
+          status: {
+               type: String,
+               required: [true, "Please enter a status"],
+               default: "Pending",
+          },
+          user_id: {
                type: Number,
                required: true,
           },
-          image: {
-               type: String,
-               required: false,
+          comment: {
+               type: [{}],
           },
      },
      {
