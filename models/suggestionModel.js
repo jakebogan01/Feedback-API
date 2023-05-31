@@ -34,7 +34,7 @@ const suggestionSchema = mongoose.Schema(
                default: "Pending",
           },
           user_id: {
-               type: Number,
+               type: String,
                required: true,
           },
           comment: {
