@@ -21,6 +21,9 @@ const suggestionSchema = mongoose.Schema(
                required: false,
                default: 0,
           },
+          users_liked: {
+               type: [],
+          },
           tag: {
                type: String,
                required: [true, "Please enter a category"],
