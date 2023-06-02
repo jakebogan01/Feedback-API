@@ -38,7 +38,7 @@ const suggestionSchema = mongoose.Schema(
                required: true,
           },
           comment: {
-               type: [{}],
+               type: [],
           },
      },
      {
