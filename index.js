@@ -11,15 +11,9 @@ app.use(
      cors({
           origin: "*",
           methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-          preflightContinue: false,
-          optionsSuccessStatus: 204,
+          preflightContinue: true,
      })
 );
-
-const corsOptions = {
-     allowedHeaders: ["Content-Type", "Authorization"],
-};
-app.use(cors(corsOptions));
 
 //
 // types of middleware
