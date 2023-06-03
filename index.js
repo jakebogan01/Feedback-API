@@ -10,15 +10,16 @@ const cors = require("cors");
 app.use(
      cors({
           origin: "*",
+          methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+          preflightContinue: false,
+          optionsSuccessStatus: 204,
      })
 );
 
-app.use(function (req, res, next) {
-     res.header("Access-Control-Allow-Origin", "*");
-     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-     next();
-});
+const corsOptions = {
+     allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
 
 //
 // types of middleware
