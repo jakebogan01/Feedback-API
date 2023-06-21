@@ -1,5 +1,8 @@
-const dotenv = require("dotenv");
 const express = require("express");
+const bodyParser = require("body-parser");
+const twilio = require("twilio");
+const ngrok = require("ngrok");
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const Suggestion = require("./models/suggestionModel");
 const User = require("./models/userModel");
@@ -19,6 +22,44 @@ app.use(
 app.use(express.json());
 // form data
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.post("/message", (req, res) => {
+     console.log(req.body);
+     let msgFrom = req.body.From;
+     let msgBody = req.body.Body;
+
+     res.send(`
+          <Response>
+               <Message>
+                    Hello ${msgFrom}. You said: ${msgBody}
+               </Message>
+          </Response>
+     `);
+});
+
+// twilio sms
+function sendSMS() {
+     const client = new twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+     return client.messages
+          .create({
+               body: "Hello from Twilio",
+               from: process.env.TWILIO_NUMBER,
+               to: "+17578183089",
+          })
+          .then((message) => console.log(message, "Message sent"))
+          .catch((error) => console.log(error, "Message not sent"));
+}
+
+// twilio receive sms
+app.post("/welcome/sms/reply/", (req, res) => {
+     const twiml = new twilio.twiml.MessagingResponse();
+     twiml.message("The Robots are coming! Head for the hills!");
+     res.writeHead(200, { "Content-Type": "text/xml" });
+     res.end(twiml.toString());
+});
+
+// sendSMS();
 
 //routes
 // create a user
